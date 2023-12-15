@@ -2,15 +2,26 @@
   "name": "mini-project-backend-2-sanber-campus-x-itb-batch-1-bima-fahimna",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mysql2": "^3.6.5",
+    "@prisma/client": "^5.7.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.0.2",
-    "sequelize": "^6.35.1"
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.35.1",
+    "sequelize-cli": "^6.6.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.7.0"
   }
 }
