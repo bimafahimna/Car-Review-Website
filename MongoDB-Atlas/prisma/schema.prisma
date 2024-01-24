@@ -3,10 +3,43 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["mongodb]
 }
 
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+
+model Movie {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  title     String   
+  year      Int   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  category   Category? @relation(fields: [categoryId],references: [id])
+  user       User? @relation(fields: [UserId], references: [id])
+  categoryId String @db.ObjectId
+  UserId String @db.ObjectId
+}
+
+
+model Category{
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  name String 
+  movies Movie[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User{
+ id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  username String @unique 
+  email String @unique 
+  password String
+  movies Movie[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
