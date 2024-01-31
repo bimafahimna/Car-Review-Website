@@ -1,13 +1,11 @@
 const prisma = require("../config/prisma")
 
-const CreateMovie = async (req,res)=>{
+const createMovie = async (req,res)=>{
   let {title, year} = req.body
-  let {id:UserId} = req.user
-
   if (title !== undefined && year !== undefined){
    try {
     let movie = await prisma.movie.create({
-      data: {title, year: Number(year), UserId}
+      data: {title, year: Number(year)}
     })
     res.json({movie, info: "movie was successfully created"})
    }catch(err){
@@ -23,9 +21,13 @@ const CreateMovie = async (req,res)=>{
 const getMovies = async (req,res)=>{
   try{
     let movies = await prisma.movie.findMany()
-    res.json(movies)
+    if (movies.length != 0){
+      res.json(movies)
+    }else{
+      res.status(404).json({info: "data not found"})
+    }
   }catch(err){
-    res.status(500).json({err})
+    res.status(404).json({info: "data not found"})
   }
 }
 
@@ -34,7 +36,7 @@ const getMovieByid = async (req,res)=>{
   try{
     let movie = await prisma.movie.findUnique({
       where: {
-        id: Number(id)
+        id: String(id)
       }
     })
     if (movie){
@@ -55,7 +57,7 @@ const updateMovie = async (req,res)=>{
     try{
       let movie = await prisma.movie.update({
         where: {
-          id: Number(id)
+          id: String(id)
         },
         data:{
           title, year
@@ -63,8 +65,7 @@ const updateMovie = async (req,res)=>{
       })
       
       res.json({movie, info: "movie was successfully updated"})
-
-    }catch(err){
+   }catch(err){
       if (err.code === "P2025"){
         res.status(404).json({info: "data not found "})
       }else{
@@ -81,9 +82,9 @@ const updateMovie = async (req,res)=>{
 const deleteMovie = async (req,res)=>{
   let {id} = req.params
   try{
-    await prisma.movie.delete({
+    await prisma.movie.deleteMany({
       where:{
-        id: Number(id)
+        id: String(id)
       }
     })
     res.json({info: "movie was successfully deleted"})
@@ -93,7 +94,7 @@ const deleteMovie = async (req,res)=>{
 }
 
 module.exports ={
-  CreateMovie,
+  createMovie,
   getMovies,
   getMovieByid,
   updateMovie,

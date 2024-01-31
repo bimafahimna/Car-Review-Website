@@ -1,20 +1,20 @@
 const express = require('express')
-const { CreateMovie, getMovies, getMovieByid, updateMovie, deleteMovie } = require('../controllers/movieController')
+const { createMovie, getMovies, getMovieByid, updateMovie, deleteMovie } = require('../controllers/movieController')
 const { movieBodyMiddleware } = require('../middleware/movieMiddleware')
 const { register, login } = require('../controllers/authController')
 const authenticateJWT = require('../middleware/jwtAuth')
 const router = express.Router()
 
 
-router.post('/movies', authenticateJWT, movieBodyMiddleware, CreateMovie)
-router.get('/movies', getMovies)
-router.get('/movies/:id', getMovieByid)
-router.patch('/movies/:id', updateMovie)
-router.delete('/movies/:id', deleteMovie)
+router.post('/api/movies',authenticateJWT,movieBodyMiddleware,createMovie)
+router.get('/api/movies', getMovies)
+router.get('/api/movies/:id', getMovieByid)
+router.patch('/api/movies/:id', updateMovie)
+router.delete('/api/movies/:id', deleteMovie)
 
 // auth
-router.post('/register', register)
-router.post('/login', login)
+router.post('/api/register', register)
+router.post('/api/login', login)
 
 
 module.exports = router

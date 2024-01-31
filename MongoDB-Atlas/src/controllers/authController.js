@@ -33,17 +33,22 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { username, password } = req.body;
-
-  let user = await prisma.user.findUnique({
-    where: {
-      username
+  try{
+    let user = await prisma.user.findUnique({
+      where: {
+        username
+      }
+    })
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
-  })
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    const accessToken = jwt.sign({ username: user.username, id: user.id }, process.env.JWT_SECRET,{ expiresIn: '30m' });
+    console.log(accessToken)
+    res.json({ accessToken });
+  }catch(err){
+    res.status(400).json(err)
   }
-  const accessToken = jwt.sign({ username: user.username, id: user.id }, process.env.JWT_SECRET);
-  res.json({ accessToken });
+  
 };
 
 
