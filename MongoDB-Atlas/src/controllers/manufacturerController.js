@@ -39,6 +39,8 @@ const getManufById = async (req,res)=>{
       let manuf = await prisma.manufacturer.findUnique({
         where: {
           id: String(id)
+        },include:{
+            car_model:true
         }
       })
       if (manuf){
