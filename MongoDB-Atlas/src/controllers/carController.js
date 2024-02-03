@@ -39,13 +39,13 @@ const getCars = async (req,res)=>{
 const getCarById = async (req,res)=>{
   let {id} = req.params
   try{
-    let movie = await prisma.car.findUnique({
+    let car = await prisma.car.findUnique({
       where: {
         id: String(id)
       }
     })
-    if (movie){
-      res.json(movie)
+    if (car){
+      res.json(car)
     }else{
       res.status(404).json({info: "data not found"})
     }
@@ -86,15 +86,25 @@ const updateCar = async (req,res)=>{
 
 const deleteCar = async (req,res)=>{
   let {id} = req.params
-  try{
-    await prisma.car.deleteMany({
-      where:{
-        id: String(id)
-      }
-    })
-    res.json({info: "Car model was successfully deleted"})
-  }catch(err){
-    res.status(404).json({info: "data not found"})
+
+  let car_id = await prisma.car.findUnique({
+    where: {
+      id:String(id)
+    }
+  })
+  if (car_id) {
+    try{
+      await prisma.car.deleteMany({
+        where:{
+          id: String(id)
+        }
+      })
+      res.json({info: "Car model was successfully deleted"})
+    }catch(err){
+      res.status(404).json({info: "data not found"})
+    }
+  }else{
+    return res.status(404).json({ message: "Car model doesn't exists" });
   }
 }
 

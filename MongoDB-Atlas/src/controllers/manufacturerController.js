@@ -33,9 +33,29 @@ const getManuf = async (req,res)=>{
     }
 }
 
+const getManufById = async (req,res)=>{
+    let {id} = req.params
+    try{
+      let manuf = await prisma.manufacturer.findUnique({
+        where: {
+          id: String(id)
+        }
+      })
+      if (manuf){
+        res.json(manuf)
+      }else{
+        res.status(404).json({info: "data not found"})
+      }
+    }catch(err){
+      res.status(404).json({info: "data not found"})
+    }
+  
+  }
+
 module.exports ={
     getManuf,
-    createManuf
+    createManuf,
+    getManufById
   }
 
 
