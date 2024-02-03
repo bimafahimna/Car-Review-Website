@@ -83,11 +83,37 @@ const updateManuf = async (req,res)=>{
   }
 }
 
+const deleteManuf = async (req,res)=>{
+  let {id} = req.params
+
+  let manuf_id = await prisma.manufacturer.findUnique({
+    where: {
+      id:String(id)
+    }
+  })
+  if (manuf_id) {
+    try{
+      await prisma.manufacturer.deleteMany({
+        where:{
+          id: String(id)
+        }
+      })
+      res.json({info: "Manufacturer was successfully deleted"})
+    }catch(err){
+      res.status(404).json({info: "data not found"})
+    }
+  }else{
+    return res.status(404).json({ message: "Manufacturer doesn't exists" });
+  }
+}
+
+
 module.exports ={
     getManuf,
     createManuf,
     getManufById,
-    updateManuf
+    updateManuf,
+    deleteManuf
   }
 
 
