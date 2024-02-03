@@ -1,7 +1,7 @@
 const prisma = require("../config/prisma")
 
 const createCar = async (req,res)=>{
-  let {manufacturer,model,image_link}=req.body
+  let {manufacturer,model,image_link,release_year}=req.body
 
   let car_model = await prisma.car.findUnique({
     where: {
@@ -16,8 +16,25 @@ const createCar = async (req,res)=>{
       model:model,
       image_link:image_link,
       manufacturer_name:{
-        connect:{manufacturer}
-      }}
+        connectOrCreate:{
+          where:{manufacturer:manufacturer},
+          create:{manufacturer:manufacturer}
+        }
+      },
+      release_years:{
+        create:[
+          {
+            unique_key:String(model)+" "+String(release_year),
+            release_years:{
+              connectOrCreate:{
+                where:{release_year:String(release_year)},
+                create:{release_year:String(release_year)}
+              }
+            }
+          }
+        ]
+      }
+    }
   })
   res.json({car,info:"Car model successfully inputed"})
 }
@@ -25,7 +42,18 @@ const createCar = async (req,res)=>{
 
 const getCars = async (req,res)=>{
   try{
-    let cars = await prisma.car.findMany()
+    let cars = await prisma.car.findMany({
+      select:{
+        manufacturer:true,
+        model:true,
+        release_years:{
+          select:{
+            release_year:true
+          }
+        },
+        image_link:true
+      }
+    })
     if (cars.length != 0){
       res.json(cars)
     }else{
@@ -42,6 +70,16 @@ const getCarById = async (req,res)=>{
     let car = await prisma.car.findUnique({
       where: {
         id: String(id)
+      },
+      select:{
+        manufacturer:true,
+        model:true,
+        release_years:{
+          select:{
+            release_year:true
+          }
+        },
+        image_link:true
       }
     })
     if (car){

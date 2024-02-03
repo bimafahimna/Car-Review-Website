@@ -21,7 +21,13 @@ const createManuf = async (req,res)=>{
 const getManuf = async (req,res)=>{
     try{
       let manuf = await prisma.manufacturer.findMany({
-        include:{car_model:true}
+        include:{
+            car_model:{
+                select:{
+                    model:true
+                }
+            }
+        }
       })
       if (manuf.length != 0){
         res.json(manuf)
@@ -39,8 +45,15 @@ const getManufById = async (req,res)=>{
       let manuf = await prisma.manufacturer.findUnique({
         where: {
           id: String(id)
-        },include:{
-            car_model:true
+        },
+        select:{
+            manufacturer:true,
+            car_model:{
+                select:{
+                    model:true,
+                    release_years:true
+                }
+            }
         }
       })
       if (manuf){
