@@ -1,28 +1,33 @@
 const prisma = require("../config/prisma")
 
-const createMovie = async (req,res)=>{
-  let {title, year} = req.body
-  if (title !== undefined && year !== undefined){
-   try {
-    let movie = await prisma.movie.create({
-      data: {title, year: Number(year)}
-    })
-    res.json({movie, info: "movie was successfully created"})
-   }catch(err){
-    res.status(500).json({err})
-   }
-  }else{
-    res.status(400).json({
-      error: "title and year is required"
-    })
+const createCar = async (req,res)=>{
+  let {manufacturer,model,image_link}=req.body
+
+  let car_model = await prisma.car.findUnique({
+    where: {
+      model
+    }
+  })
+  if (car_model) {
+    return res.status(409).json({ message: 'Car already exists' });
   }
+  let car = await prisma.car.create({
+    data:{
+      model:model,
+      image_link:image_link,
+      manufacturer_name:{
+        connect:{manufacturer}
+      }}
+  })
+  res.json({car,info:"Car data successfully inputed"})
 }
 
-const getMovies = async (req,res)=>{
+
+const getCars = async (req,res)=>{
   try{
-    let movies = await prisma.movie.findMany()
-    if (movies.length != 0){
-      res.json(movies)
+    let cars = await prisma.car.findMany()
+    if (cars.length != 0){
+      res.json(cars)
     }else{
       res.status(404).json({info: "data not found"})
     }
@@ -31,10 +36,10 @@ const getMovies = async (req,res)=>{
   }
 }
 
-const getMovieByid = async (req,res)=>{
+const getCarById = async (req,res)=>{
   let {id} = req.params
   try{
-    let movie = await prisma.movie.findUnique({
+    let movie = await prisma.car.findUnique({
       where: {
         id: String(id)
       }
@@ -50,21 +55,21 @@ const getMovieByid = async (req,res)=>{
 
 }
 
-const updateMovie = async (req,res)=>{
+const updateCar = async (req,res)=>{
   let {id} = req.params
-  let {title, year} = req.body
-  if (title !== undefined && year !== undefined){
+  let {manufacturer,model,image_link} = req.body
+  if (model !== undefined || image_link !== undefined || manufacture !== undefined){
     try{
-      let movie = await prisma.movie.update({
+      let car = await prisma.car.update({
         where: {
           id: String(id)
         },
         data:{
-          title, year
+          manufacturer,model,image_link
         }
       })
       
-      res.json({movie, info: "movie was successfully updated"})
+      res.json({car, info: "Car data was successfully updated"})
    }catch(err){
       if (err.code === "P2025"){
         res.status(404).json({info: "data not found "})
@@ -74,7 +79,7 @@ const updateMovie = async (req,res)=>{
     }
   }else{
     res.status(400).json({
-      error: "title and year is required"
+      error: "manufacturer, model, and image_link is required"
     })
   }
 }
@@ -94,9 +99,9 @@ const deleteMovie = async (req,res)=>{
 }
 
 module.exports ={
-  createMovie,
-  getMovies,
-  getMovieByid,
-  updateMovie,
+  createCar,
+  getCars,
+  getCarById,
+  updateCar,
   deleteMovie
 }
