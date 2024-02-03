@@ -1,8 +1,11 @@
 const express = require('express')
+
+const { register, login,deleteUser } = require('../controllers/userController')
+
 const { createCar, getCars, getCarById, updateCar, deleteCar } = require('../controllers/carController')
 const { carBodyMiddleware,UpdateCarMiddleware } = require('../middleware/carMiddleware')
-const { register, login,deleteUser } = require('../controllers/userController')
-const { getManuf, createManuf } = require('../controllers/manufacturerController')
+
+const { getManuf, createManuf, getManufById } = require('../controllers/manufacturerController')
 
 const authenticateJWT = require('../middleware/jwtAuth')
 const router = express.Router()
@@ -22,6 +25,7 @@ router.delete('/api/car/:id',authenticateJWT, deleteCar)
 
 // Manufacturer
 router.get('/api/manufacturers',getManuf)
+router.get('/api/manufacturer/:id',getManufById)
 router.post('/api/manufacturers',createManuf)
 
 
