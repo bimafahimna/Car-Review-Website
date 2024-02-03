@@ -58,7 +58,7 @@ const getCarById = async (req,res)=>{
 const updateCar = async (req,res)=>{
   let {id} = req.params
   let {manufacturer,model,image_link} = req.body
-  if (model !== undefined || image_link !== undefined || manufacture !== undefined){
+  if (model !== undefined || image_link !== undefined || manufacturer !== undefined){
     try{
       let car = await prisma.car.update({
         where: {
