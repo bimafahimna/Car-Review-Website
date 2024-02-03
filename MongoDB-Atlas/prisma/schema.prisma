@@ -43,24 +43,24 @@ model Comment {
 }
 
 model Review {
-  id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  car             Car       @relation(fields: [car_id],references: [id])
-  car_id          String    @unique @db.ObjectId
-  review          String
-  comment_review  Comment[]
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id                        String            @id @default(auto()) @map("_id") @db.ObjectId
+  model_release_years       ModelReleaseYear  @relation(fields: [model_release_year],references: [unique_key])
+  model_release_year        String            @unique
+  review                    String
+  comment_review            Comment[]
+  createdAt                 DateTime          @default(now())
+  updatedAt                 DateTime          @updatedAt
 }
 
 model Car {
-  id                String        @id @default(auto()) @map("_id") @db.ObjectId
-  manufacturer_name Manufacturer  @relation(fields: [manufacturer],references: [manufacturer])
-  manufacturer      String        
-  model             String        @unique
-  image_link        String
-  review            Review?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  id                  String              @id @default(auto()) @map("_id") @db.ObjectId
+  manufacturer_name   Manufacturer        @relation(fields: [manufacturer],references: [manufacturer])
+  manufacturer        String        
+  model               String              @unique
+  release_years       ModelReleaseYear[]
+  image_link          String
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
 }
 
 model Manufacturer{
@@ -70,3 +70,21 @@ model Manufacturer{
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
+
+model ReleaseYear{
+  id            String              @id @default(auto()) @map("_id") @db.ObjectId
+  release_year  String              @unique
+  models        ModelReleaseYear[]
+}
+
+model ModelReleaseYear{
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  model           String      
+  release_year    String      
+  models          Car         @relation(fields: [model],references: [model])
+  release_years   ReleaseYear @relation(fields: [release_year],references: [release_year])
+  unique_key      String      @unique
+  review          Review?
+}
+
+
