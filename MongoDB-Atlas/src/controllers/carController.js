@@ -9,7 +9,7 @@ const createCar = async (req,res)=>{
     }
   })
   if (car_model) {
-    return res.status(409).json({ message: 'Car already exists' });
+    return res.status(409).json({ message: 'Car model already exists' });
   }
   let car = await prisma.car.create({
     data:{
@@ -19,7 +19,7 @@ const createCar = async (req,res)=>{
         connect:{manufacturer}
       }}
   })
-  res.json({car,info:"Car data successfully inputed"})
+  res.json({car,info:"Car model successfully inputed"})
 }
 
 
@@ -69,7 +69,7 @@ const updateCar = async (req,res)=>{
         }
       })
       
-      res.json({car, info: "Car data was successfully updated"})
+      res.json({car, info: "Car model was successfully updated"})
    }catch(err){
       if (err.code === "P2025"){
         res.status(404).json({info: "data not found "})
@@ -84,15 +84,15 @@ const updateCar = async (req,res)=>{
   }
 }
 
-const deleteMovie = async (req,res)=>{
+const deleteCar = async (req,res)=>{
   let {id} = req.params
   try{
-    await prisma.movie.deleteMany({
+    await prisma.car.deleteMany({
       where:{
         id: String(id)
       }
     })
-    res.json({info: "movie was successfully deleted"})
+    res.json({info: "Car model was successfully deleted"})
   }catch(err){
     res.status(404).json({info: "data not found"})
   }
@@ -103,5 +103,5 @@ module.exports ={
   getCars,
   getCarById,
   updateCar,
-  deleteMovie
+  deleteCar
 }
