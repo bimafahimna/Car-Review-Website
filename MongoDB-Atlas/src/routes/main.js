@@ -1,5 +1,5 @@
 const express = require('express')
-const { createCar, getCars, getCarById, updateCar, deleteMovie } = require('../controllers/carController')
+const { createCar, getCars, getCarById, updateCar, deleteCar } = require('../controllers/carController')
 const { carBodyMiddleware,UpdateCarMiddleware } = require('../middleware/carMiddleware')
 const { register, login,deleteUser } = require('../controllers/userController')
 const { getManuf, createManuf } = require('../controllers/manufacturerController')
@@ -18,7 +18,7 @@ router.post('/api/cars',authenticateJWT,carBodyMiddleware,createCar)
 router.get('/api/cars', getCars)
 router.get('/api/car/:id', getCarById)
 router.patch('/api/car/:id',authenticateJWT,UpdateCarMiddleware, updateCar)
-router.delete('/api/car/:id',authenticateJWT, deleteMovie)
+router.delete('/api/car/:id',authenticateJWT, deleteCar)
 
 // Manufacturer
 router.get('/api/manufacturers',getManuf)
