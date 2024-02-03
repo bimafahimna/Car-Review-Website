@@ -2,7 +2,7 @@ const express = require('express')
 const mainRoutes = require('./src/routes/main');
 const cors = require('cors')
 const app = express()
-const port = 1234
+const port = 90
 
 var corsOptions = {
   origin: 'http://localhost:1234', // ini merupakan host frontend yang nantinya akan menggunakan backend ini
