@@ -24,67 +24,72 @@ model User{
 
 model Profile {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @unique @db.ObjectId
+  name        String    @unique
   email_news  String    @default("Yes")
   user        User      @relation(fields: [userId],references: [id])
-  userId      String    @unique @db.ObjectId
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
 
 model Comment {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  comment     String
-  user        User      @relation(fields: [userId],references: [id])
-  userId      String    @db.ObjectId
-  review      Review    @relation(fields: [reviewId],references: [id])
   reviewId    String    @db.ObjectId
+  comment     String
+  userId      String    @db.ObjectId
+  user        User      @relation(fields: [userId],references: [id])
+  review      Review    @relation(fields: [reviewId],references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
 
 model Review {
   id                        String            @id @default(auto()) @map("_id") @db.ObjectId
-  model_release_years       ModelReleaseYear  @relation(fields: [model_release_year],references: [unique_key])
-  model_release_year        String            @unique
+  car                       String            @unique
   review                    String
   comment_review            Comment[]
+  cars                      Car               @relation(fields: [car],references: [unique_key])
   createdAt                 DateTime          @default(now())
   updatedAt                 DateTime          @updatedAt
 }
 
-model Car {
+model Model {
   id                  String              @id @default(auto()) @map("_id") @db.ObjectId
-  manufacturer_name   Manufacturer        @relation(fields: [manufacturer],references: [manufacturer])
-  manufacturer        String        
   model               String              @unique
-  release_years       ModelReleaseYear[]
-  image_link          String
+  car                 Car[]
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 }
 
 model Manufacturer{
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  manufacturer  String    @unique
-  car_model     Car[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id            String              @id @default(auto()) @map("_id") @db.ObjectId
+  manufacturer  String              @unique
+  car           Car[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
 }
 
 model ReleaseYear{
   id            String              @id @default(auto()) @map("_id") @db.ObjectId
   release_year  String              @unique
-  models        ModelReleaseYear[]
+  car           Car[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
 }
 
-model ModelReleaseYear{
-  id              String      @id @default(auto()) @map("_id") @db.ObjectId
-  model           String      
-  release_year    String      
-  models          Car         @relation(fields: [model],references: [model])
-  release_years   ReleaseYear @relation(fields: [release_year],references: [release_year])
-  unique_key      String      @unique
-  review          Review?
+model Car{
+  id                  String        @id @default(auto()) @map("_id") @db.ObjectId
+  manufacturer        String        
+  model               String      
+  release_year        String      
+  unique_key          String        @unique
+  image_link          String
+  review              Review?
+  manufacturers       Manufacturer  @relation(fields: [manufacturer],references: [manufacturer])
+  models              Model         @relation(fields: [model],references: [model])
+  release_years       ReleaseYear   @relation(fields: [release_year],references: [release_year])
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
 }
 
 
