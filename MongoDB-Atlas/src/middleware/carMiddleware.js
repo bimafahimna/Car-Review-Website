@@ -41,4 +41,8 @@ const UniqueKeyChecker = async (req,res,next)=>{
 }
 
 
-module.exports = {carBodyMiddleware,UpdateCarMiddleware,UniqueKeyChecker}
+module.exports = {
+    carBodyMiddleware,
+    UpdateCarMiddleware,
+    UniqueKeyChecker
+}
