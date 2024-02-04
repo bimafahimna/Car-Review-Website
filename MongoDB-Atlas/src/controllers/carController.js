@@ -10,8 +10,6 @@ const createCar = async (req,res)=>{
     }
   })
 
-  console.log(car_model)
-
   if (car_model) {
     return res.status(409).json({ message: 'Car already exists' });
   }
@@ -86,7 +84,20 @@ const getCarById = async (req,res)=>{
 
 const updateCar = async (req,res)=>{
   let {id} = req.params
-  let {manufacturer,model,image_link} = req.body
+  let {manufacturer,model,release_year,image_link} = req.body
+
+  let unique_key = String(manufacturer)+" "+String(model)+" "+String(release_year)
+
+  let car_model = await prisma.car.findUnique({
+    where: {
+      unique_key:unique_key
+    }
+  })
+
+  if (car_model) {
+    return res.status(409).json({ message: 'Car already exists' });
+  }
+
   if (model !== undefined || image_link !== undefined || manufacturer !== undefined){
     try{
       let car = await prisma.car.update({
@@ -94,7 +105,26 @@ const updateCar = async (req,res)=>{
           id: String(id)
         },
         data:{
-          manufacturer,model,image_link
+          unique_key:unique_key,
+          image_link:image_link,
+          manufacturers:{
+            connectOrCreate:{
+              where:{manufacturer:manufacturer},
+              create:{manufacturer:manufacturer}
+            }
+          },
+          models:{
+            connectOrCreate:{
+              where:{model:model},
+              create:{model:model}
+            }
+          },
+          release_years:{
+            connectOrCreate:{
+              where:{release_year:String(release_year)},
+              create:{release_year:String(release_year)}
+            }
+          }
         }
       })
       
