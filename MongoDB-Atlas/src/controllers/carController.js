@@ -2,11 +2,10 @@ const prisma = require("../config/prisma")
 
 const createCar = async (req,res)=>{
   let {manufacturer,model,image_link,release_year}=req.body
-
+  let unique_key = String(manufacturer)+" "+String(model)+" "+String(release_year)
   let car_model = await prisma.car.findUnique({
     where: {
-      model:model,
-      image_link:image_link
+      unique_key:unique_key
     }
   })
 
@@ -17,60 +16,59 @@ const createCar = async (req,res)=>{
   }
 
   try{
-    // let car = await prisma.car.create({
-    //   data:{
-    //     model:model,
-    //     image_link:image_link,
-    //     manufacturer_name:{
-    //       connectOrCreate:{
-    //         where:{manufacturer:manufacturer},
-    //         create:{manufacturer:manufacturer}
-    //       }
-    //     },
-    //     release_years:{
-    //       create:[
-    //         {
-    //           unique_key:String(model)+" "+String(release_year),
-    //           release_years:{
-    //             connectOrCreate:{
-    //               where:{release_year:String(release_year)},
-    //               create:{release_year:String(release_year)}
-    //             }
-    //           }
-    //         }
-    //       ]
-    //     }
-    //   }
-    // })
-  
-    let model_release_year = await prisma.modelReleaseYear.create({
+    let car = await prisma.car.create({
       data:{
-        unique_key:String(model)+" "+String(release_year),
+        unique_key:unique_key,
+        image_link:image_link,
+        manufacturers:{
+          connectOrCreate:{
+            where:{manufacturer:manufacturer},
+            create:{manufacturer:manufacturer}
+          }
+        },
         models:{
           connectOrCreate:{
             where:{model:model},
-            create:{
-              model:model,
-              manufacturer_name:{
-                connectOrCreate:{
-                  where:{manufacturer:manufacturer},
-                  create:{manufacturer:manufacturer}
-                }
-              },
-              image_link:image_link
-            }
+            create:{model:model}
           }
         },
-        release_years:{
+        release_year:{
           connectOrCreate:{
-            where:{release_year:String(release_year)},
-            create:{release_year:String(release_year)}
+            where:{release_year:release_year},
+            create:{release_year:release_year}
           }
         }
       }
     })
+    
+    // let model_release_year = await prisma.modelReleaseYear.create({
+    //   data:{
+    //     unique_key:String(model)+" "+String(release_year),
+    //     models:{
+    //       connectOrCreate:{
+    //         where:{model:model},
+    //         create:{
+    //           model:model,
+    //           manufacturer_name:{
+    //             connectOrCreate:{
+    //               where:{manufacturer:manufacturer},
+    //               create:{manufacturer:manufacturer}
+    //             }
+    //           },
+    //           image_link:image_link
+    //         }
+    //       }
+    //     },
+    //     release_years:{
+    //       connectOrCreate:{
+    //         where:{release_year:String(release_year)},
+    //         create:{release_year:String(release_year)}
+    //       }
+    //     }
+    //   }
+    // })
 
-      res.json({model_release_year,info:"Car model successfully inputed"})
+      res.json({car,info:"Car model successfully inputed"})
     }catch(err){
     if (err.code === "P2025"){
       res.status(404).json({info: "data not found "})
@@ -79,7 +77,6 @@ const createCar = async (req,res)=>{
     }
   }
 }
-
 
 const getCars = async (req,res)=>{
   try{
