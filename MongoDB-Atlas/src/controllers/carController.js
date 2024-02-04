@@ -13,7 +13,7 @@ const createCar = async (req,res)=>{
   console.log(car_model)
 
   if (car_model) {
-    return res.status(409).json({ message: 'Car model already exists' });
+    return res.status(409).json({ message: 'Car already exists' });
   }
 
   try{
@@ -42,7 +42,7 @@ const createCar = async (req,res)=>{
       }
     })
     
-      res.json({car,info:"Car model successfully inputed"})
+      res.json({car,info:"Car successfully inputed"})
     }catch(err){
     if (err.code === "P2025"){
       res.status(404).json({info: "data not found "})
@@ -98,13 +98,13 @@ const updateCar = async (req,res)=>{
         }
       })
       
-      res.json({car, info: "Car model was successfully updated"})
+      res.json({car, info: "Car was successfully updated"})
    }catch(err){
     res.status(500).json(err)
       }
   }else{
     res.status(400).json({
-      error: "manufacturer, model, and image_link is required"
+      error: "manufacturer, model, release_year, and image_link is required"
     })
   }
 }
@@ -124,12 +124,12 @@ const deleteCar = async (req,res)=>{
           id: String(id)
         }
       })
-      res.json({info: "Car model was successfully deleted"})
+      res.json({info: "Car was successfully deleted"})
     }catch(err){
       res.status(404).json({info: "data not found"})
     }
   }else{
-    return res.status(404).json({ message: "Car model doesn't exists" });
+    return res.status(404).json({ message: "Car doesn't exists" });
   }
 }
 
