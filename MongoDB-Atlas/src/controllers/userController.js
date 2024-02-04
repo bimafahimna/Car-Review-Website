@@ -13,7 +13,7 @@ const register = async (req, res) => {
       username
     }
   })
-  let user_email = await await prisma.user.findUnique({
+  let user_email = await prisma.user.findUnique({
     where: {
       email
     }
