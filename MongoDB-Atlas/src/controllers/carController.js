@@ -4,16 +4,6 @@ const createCar = async (req,res)=>{
   let {manufacturer,model,image_link,release_year}=req.body
   let unique_key = String(manufacturer)+" "+String(model)+" "+String(release_year)
   
-  let car_model = await prisma.car.findUnique({
-    where: {
-      unique_key:unique_key
-    }
-  })
-
-  if (car_model) {
-    return res.status(409).json({ message: 'Car already exists' });
-  }
-
   try{
     let car = await prisma.car.create({
       data:{
@@ -88,17 +78,7 @@ const updateCar = async (req,res)=>{
 
   let unique_key = String(manufacturer)+" "+String(model)+" "+String(release_year)
 
-  let car_model = await prisma.car.findUnique({
-    where: {
-      unique_key:unique_key
-    }
-  })
-
-  if (car_model) {
-    return res.status(409).json({ message: 'Car already exists' });
-  }
-
-  if (model !== undefined || image_link !== undefined || manufacturer !== undefined){
+  if (model !== undefined && image_link !== undefined && manufacturer !== undefined && release_year !== undefined){
     try{
       let car = await prisma.car.update({
         where: {
@@ -130,7 +110,7 @@ const updateCar = async (req,res)=>{
       
       res.json({car, info: "Car was successfully updated"})
    }catch(err){
-    res.status(500).json(err)
+    res.status(404).json(err.message)
       }
   }else{
     res.status(400).json({
@@ -159,7 +139,7 @@ const deleteCar = async (req,res)=>{
       res.status(404).json({info: "data not found"})
     }
   }else{
-    return res.status(404).json({ message: "Car doesn't exists" });
+    return res.status(404).json({ message: "Car doesn't exist" });
   }
 }
 
