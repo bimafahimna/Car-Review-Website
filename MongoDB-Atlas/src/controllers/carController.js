@@ -5,38 +5,79 @@ const createCar = async (req,res)=>{
 
   let car_model = await prisma.car.findUnique({
     where: {
-      model
+      model:model,
+      image_link:image_link
     }
   })
+
+  console.log(car_model)
+
   if (car_model) {
     return res.status(409).json({ message: 'Car model already exists' });
   }
-  let car = await prisma.car.create({
-    data:{
-      model:model,
-      image_link:image_link,
-      manufacturer_name:{
-        connectOrCreate:{
-          where:{manufacturer:manufacturer},
-          create:{manufacturer:manufacturer}
-        }
-      },
-      release_years:{
-        create:[
-          {
-            unique_key:String(model)+" "+String(release_year),
-            release_years:{
-              connectOrCreate:{
-                where:{release_year:String(release_year)},
-                create:{release_year:String(release_year)}
-              }
+
+  try{
+    // let car = await prisma.car.create({
+    //   data:{
+    //     model:model,
+    //     image_link:image_link,
+    //     manufacturer_name:{
+    //       connectOrCreate:{
+    //         where:{manufacturer:manufacturer},
+    //         create:{manufacturer:manufacturer}
+    //       }
+    //     },
+    //     release_years:{
+    //       create:[
+    //         {
+    //           unique_key:String(model)+" "+String(release_year),
+    //           release_years:{
+    //             connectOrCreate:{
+    //               where:{release_year:String(release_year)},
+    //               create:{release_year:String(release_year)}
+    //             }
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   }
+    // })
+  
+    let model_release_year = await prisma.modelReleaseYear.create({
+      data:{
+        unique_key:String(model)+" "+String(release_year),
+        models:{
+          connectOrCreate:{
+            where:{model:model},
+            create:{
+              model:model,
+              manufacturer_name:{
+                connectOrCreate:{
+                  where:{manufacturer:manufacturer},
+                  create:{manufacturer:manufacturer}
+                }
+              },
+              image_link:image_link
             }
           }
-        ]
+        },
+        release_years:{
+          connectOrCreate:{
+            where:{release_year:String(release_year)},
+            create:{release_year:String(release_year)}
+          }
+        }
       }
+    })
+
+      res.json({model_release_year,info:"Car model successfully inputed"})
+    }catch(err){
+    if (err.code === "P2025"){
+      res.status(404).json({info: "data not found "})
+    }else{
+      res.status(500).json(err)
     }
-  })
-  res.json({car,info:"Car model successfully inputed"})
+  }
 }
 
 
@@ -49,10 +90,21 @@ const getCars = async (req,res)=>{
         release_years:{
           select:{
             release_year:true
+          },
+          orderBy:{
+            release_year:'asc'
           }
         },
         image_link:true
-      }
+      },
+      orderBy:[
+        {
+          manufacturer:'asc'
+        },
+        {
+          model:'asc'
+        }
+      ]
     })
     if (cars.length != 0){
       res.json(cars)
