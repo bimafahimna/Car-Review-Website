@@ -13,6 +13,8 @@ const { CarCheckerforReview, ReviewChecker } = require('../middleware/reviewMidd
 const { createProfile } = require('../controllers/profileController')
 const { UserCheckerforProfile, ProfileChecker } = require('../middleware/profileMiddleware')
 
+const { createComment } = require('../controllers/commentController')
+
 const authenticateJWT = require('../middleware/jwtAuth')
 const router = express.Router()
 
@@ -38,6 +40,9 @@ router.post('/api/reviews/:id', authenticateJWT, CarCheckerforReview, ReviewChec
 
 // Profile
 router.post('/api/profile/:id', authenticateJWT, UserCheckerforProfile, ProfileChecker, createProfile)
+
+// Comment
+router.post('/api/:review_id/:user_id/comment', authenticateJWT, createComment)
 
 
 
