@@ -1,6 +1,13 @@
 # This is the backend side of the Car Review Website
 
-## Used Tech:
-JavaScript, MongoDB, Prisma, Swagger API Documentation, Vercel
+**A Car Review REST API using MongoDB Atlas that is modular and scalable**
 
-With JWT Authentication
+## Used Tech:
+JavaScript, MongoDB Atlas, Prisma, Swagger API Documentation, Vercel, JWT Authentication
+
+## Deployment Link
+*Deployed using Vercel:* [Car Review Web](https://car-review-vert.vercel.app/)
+
+### Notes
+- Backend still in development
+- Deployed link will direct it to Swagger API Documentation
