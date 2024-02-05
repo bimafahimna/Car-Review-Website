@@ -25,7 +25,7 @@ model User{
 model Profile {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   userId      String    @unique @db.ObjectId
-  name        String    @unique
+  bio         String?
   email_news  String    @default("Yes")
   user        User      @relation(fields: [userId],references: [id])
   createdAt   DateTime  @default(now())
@@ -46,35 +46,13 @@ model Comment {
 model Review {
   id                        String            @id @default(auto()) @map("_id") @db.ObjectId
   car                       String            @unique
+  title                     String            
   review                    String
+  rating                    Float
   comment_review            Comment[]
   cars                      Car               @relation(fields: [car],references: [unique_key])
   createdAt                 DateTime          @default(now())
   updatedAt                 DateTime          @updatedAt
-}
-
-model Model {
-  id                  String              @id @default(auto()) @map("_id") @db.ObjectId
-  model               String              @unique
-  car                 Car[]
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
-}
-
-model Manufacturer{
-  id            String              @id @default(auto()) @map("_id") @db.ObjectId
-  manufacturer  String              @unique
-  car           Car[]
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
-}
-
-model ReleaseYear{
-  id            String              @id @default(auto()) @map("_id") @db.ObjectId
-  release_year  String              @unique
-  car           Car[]
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
 }
 
 model Car{
@@ -85,9 +63,6 @@ model Car{
   unique_key          String        @unique
   image_link          String
   review              Review?
-  manufacturers       Manufacturer  @relation(fields: [manufacturer],references: [manufacturer])
-  models              Model         @relation(fields: [model],references: [model])
-  release_years       ReleaseYear   @relation(fields: [release_year],references: [release_year])
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
 }
