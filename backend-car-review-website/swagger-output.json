@@ -6,16 +6,6 @@
     "description": "Car Review REST API Documentation"
   },
   "paths": {
-    "/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/register": {
       "post": {
         "tags": [
