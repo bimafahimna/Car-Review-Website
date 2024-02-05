@@ -2,10 +2,10 @@ const express = require('express')
 
 const { register, login,deleteUser } = require('../controllers/userController')
 
-const { createCar, getCars, getCarById, updateCar, deleteCar } = require('../controllers/carController')
+const { createCar, getCars, getCarById, updateCar, deleteCar, getManufacturer } = require('../controllers/carController')
 const { carBodyMiddleware,UpdateCarMiddleware, UniqueKeyChecker } = require('../middleware/carMiddleware')
 
-const { getManuf, createManuf, getManufById,updateManuf, deleteManuf } = require('../controllers/manufacturerController')
+const { getManuf, getManufById,updateManuf, deleteManuf } = require('../controllers/manufacturerController')
 const { ManufacturerChecker,ManufInputChecker } = require('../middleware/manufMiddleware')
 
 const authenticateJWT = require('../middleware/jwtAuth')
@@ -25,9 +25,8 @@ router.patch('/api/car/:id', authenticateJWT, UpdateCarMiddleware, UniqueKeyChec
 router.delete('/api/car/:id', authenticateJWT, deleteCar)
 
 // Manufacturer
-router.get('/api/manufacturers', getManuf)
+router.get('/api/manufacturers', getManufacturer)
 router.get('/api/manufacturer/:id', getManufById)
-router.post('/api/manufacturers', authenticateJWT,ManufInputChecker, ManufacturerChecker, createManuf)
 router.patch('/api/manufacturer/:id', authenticateJWT,ManufInputChecker,ManufacturerChecker, updateManuf)
 router.delete('/api/manufacturer/:id', authenticateJWT, deleteManuf)
 

@@ -1,16 +1,5 @@
 const prisma = require("../config/prisma")
 
-const createManuf = async (req,res)=>{
-    let {manufacturer}=req.body
-  
-    let manuf = await prisma.manufacturer.create({
-      data:{
-        manufacturer:manufacturer
-      }
-    })
-    res.json({manuf,info:"Manufacturer data successfully inputed"})
-}
-
 const getManuf = async (req,res)=>{
     try{
       let manuf = await prisma.manufacturer.findMany({
@@ -123,7 +112,6 @@ const deleteManuf = async (req,res)=>{
 
 module.exports ={
     getManuf,
-    createManuf,
     getManufById,
     updateManuf,
     deleteManuf

@@ -115,10 +115,33 @@ const deleteCar = async (req,res)=>{
   }
 }
 
+const getManufacturer = async (req,res)=>{
+  let {manufacturer} = req.body
+
+  try{
+    let cars = await prisma.car.findMany({
+      where:{
+        manufacturer:manufacturer
+      }
+    })
+    if (cars.length != 0){
+      res.json(cars)
+    }else{
+      res.status(404).json({info: "data not found"})
+    }
+  }catch(err){
+    res.status(500).json(err)
+  }
+  
+}
+
+
+
 module.exports ={
   createCar,
   getCars,
   getCarById,
   updateCar,
-  deleteCar
+  deleteCar,
+  getManufacturer
 }
