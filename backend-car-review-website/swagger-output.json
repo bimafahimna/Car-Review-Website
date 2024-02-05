@@ -91,48 +91,6 @@
         }
       }
     },
-    "/api/delete": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "username": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/cars": {
       "get": {
         "tags": [
@@ -220,6 +178,9 @@
     },
     "/api/car/{id}": {
       "get": {
+        "tags": [
+          "Car"
+        ],
         "description": "",
         "parameters": [
           {
@@ -349,6 +310,9 @@
     },
     "/api/manufacturers": {
       "get": {
+        "tags": [
+          "Manufacturer"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -365,6 +329,9 @@
     },
     "/api/reviews/{id}": {
       "post": {
+        "tags": [
+          "Review"
+        ],
         "description": "",
         "parameters": [
           {
@@ -424,6 +391,9 @@
     },
     "/api/profile/{id}": {
       "post": {
+        "tags": [
+          "Profile"
+        ],
         "description": "",
         "parameters": [
           {
@@ -480,6 +450,9 @@
     },
     "/api/{review_id}/{user_id}/comment": {
       "post": {
+        "tags": [
+          "Comment"
+        ],
         "description": "",
         "parameters": [
           {
