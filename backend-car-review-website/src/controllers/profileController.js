@@ -1,6 +1,7 @@
 const prisma = require("../config/prisma")
 
 const createProfile = async (req,res)=>{
+    // #swagger.tags = ['Profile']
     let {id} = req.params
     
     let {bio,email_news} = req.body

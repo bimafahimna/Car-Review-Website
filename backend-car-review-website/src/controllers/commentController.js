@@ -1,6 +1,7 @@
 const prisma = require("../config/prisma")
 
 const createComment = async (req,res)=>{
+    // #swagger.tags = ['Comment']
     let {user_id,review_id} = req.params
     
     let {comment} = req.body

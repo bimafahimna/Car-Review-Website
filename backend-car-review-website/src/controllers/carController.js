@@ -49,6 +49,7 @@ const getCars = async (req,res)=>{
 }
 
 const getCarById = async (req,res)=>{
+  // #swagger.tags = ['Car']
   let {id} = req.params
   try{
     let car = await prisma.car.findUnique({
@@ -129,6 +130,7 @@ const deleteCar = async (req,res)=>{
 }
 
 const getManufacturer = async (req,res)=>{
+  // #swagger.tags = ['Manufacturer']
   let {manufacturer} = req.body
 
   try{

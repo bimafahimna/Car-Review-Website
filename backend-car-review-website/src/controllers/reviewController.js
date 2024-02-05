@@ -1,6 +1,7 @@
 const prisma = require("../config/prisma")
 
 const createReview = async (req,res)=>{
+    // #swagger.tags = ['Review']
     let {id} = req.params
     
     let {title,review,rating} = req.body
