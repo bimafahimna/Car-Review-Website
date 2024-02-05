@@ -18,10 +18,6 @@ const { createComment } = require('../controllers/commentController')
 const authenticateJWT = require('../middleware/jwtAuth')
 const router = express.Router()
 
-router.get('/', (req,res)=>{
-    res.json({info: "this is root page"})
-  })
-  
 
 // auth
 router.post('/api/register', register)
