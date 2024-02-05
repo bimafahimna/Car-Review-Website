@@ -32,8 +32,6 @@ router.delete('/api/car/:id', authenticateJWT, deleteCar)
 
 // Manufacturer
 router.get('/api/manufacturers', getManufacturer)
-// router.patch('/api/manufacturer/:id', authenticateJWT,ManufInputChecker,ManufacturerChecker, updateManuf)
-// router.delete('/api/manufacturer/:id', authenticateJWT, deleteManuf)
 
 //  Review
 router.post('/api/reviews/:id', authenticateJWT, CarCheckerforReview, ReviewChecker, createReview)
