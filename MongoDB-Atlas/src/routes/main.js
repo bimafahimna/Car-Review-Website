@@ -5,8 +5,10 @@ const { register, login,deleteUser } = require('../controllers/userController')
 const { createCar, getCars, getCarById, updateCar, deleteCar, getManufacturer } = require('../controllers/carController')
 const { carBodyMiddleware,UpdateCarMiddleware, UniqueKeyChecker } = require('../middleware/carMiddleware')
 
-const { getManuf, getManufById,updateManuf, deleteManuf } = require('../controllers/manufacturerController')
 const { ManufacturerChecker,ManufInputChecker } = require('../middleware/manufMiddleware')
+
+const { createReview } = require('../controllers/reviewController')
+const { CarCheckerforReview, ReviewChecker  } = require('../middleware/reviewMiddleware')
 
 const authenticateJWT = require('../middleware/jwtAuth')
 const router = express.Router()
@@ -15,7 +17,6 @@ const router = express.Router()
 router.post('/api/register', register)
 router.post('/api/login', login)
 router.delete("/api/delete",authenticateJWT,deleteUser)
-// router.get('/api/user',getUser)
 
 // Cars
 router.get('/api/cars', getCars)
@@ -26,9 +27,11 @@ router.delete('/api/car/:id', authenticateJWT, deleteCar)
 
 // Manufacturer
 router.get('/api/manufacturers', getManufacturer)
-router.get('/api/manufacturer/:id', getManufById)
-router.patch('/api/manufacturer/:id', authenticateJWT,ManufInputChecker,ManufacturerChecker, updateManuf)
-router.delete('/api/manufacturer/:id', authenticateJWT, deleteManuf)
+// router.patch('/api/manufacturer/:id', authenticateJWT,ManufInputChecker,ManufacturerChecker, updateManuf)
+// router.delete('/api/manufacturer/:id', authenticateJWT, deleteManuf)
+
+//  Review
+router.post('/api/reviews/:id', authenticateJWT, CarCheckerforReview, ReviewChecker, createReview)
 
 
 module.exports = router
