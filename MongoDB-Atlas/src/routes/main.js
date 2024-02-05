@@ -8,7 +8,10 @@ const { carBodyMiddleware,UpdateCarMiddleware, UniqueKeyChecker } = require('../
 const { ManufacturerChecker,ManufInputChecker } = require('../middleware/manufMiddleware')
 
 const { createReview } = require('../controllers/reviewController')
-const { CarCheckerforReview, ReviewChecker  } = require('../middleware/reviewMiddleware')
+const { CarCheckerforReview, ReviewChecker } = require('../middleware/reviewMiddleware')
+
+const { createProfile } = require('../controllers/profileController')
+const { UserCheckerforProfile, ProfileChecker } = require('../middleware/profileMiddleware')
 
 const authenticateJWT = require('../middleware/jwtAuth')
 const router = express.Router()
@@ -32,6 +35,10 @@ router.get('/api/manufacturers', getManufacturer)
 
 //  Review
 router.post('/api/reviews/:id', authenticateJWT, CarCheckerforReview, ReviewChecker, createReview)
+
+// Profile
+router.post('/api/profile/:id', authenticateJWT, UserCheckerforProfile, ProfileChecker, createProfile)
+
 
 
 module.exports = router
