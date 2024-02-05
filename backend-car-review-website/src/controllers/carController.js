@@ -1,6 +1,13 @@
 const prisma = require("../config/prisma")
 
 const createCar = async (req,res)=>{
+  // #swagger.tags = ['Car']
+  // #swagger.autoHeaders = false
+  /* #swagger.security = [{
+          "bearerAuth": []
+  }] */
+
+
   let {manufacturer,model,image_link,release_year}=req.body
   let rel_year = String(release_year)
   let unique_key = String(manufacturer)+" "+String(model)+" "+rel_year
@@ -27,6 +34,8 @@ const createCar = async (req,res)=>{
 }
 
 const getCars = async (req,res)=>{
+  // #swagger.tags = ['Car']
+
   try{
     let cars = await prisma.car.findMany()
     if (cars.length != 0){
@@ -59,6 +68,8 @@ const getCarById = async (req,res)=>{
 }
 
 const updateCar = async (req,res)=>{
+  // #swagger.tags = ['Car']
+
   let {id} = req.params
   let {manufacturer,model,release_year,image_link} = req.body
 
@@ -92,6 +103,8 @@ const updateCar = async (req,res)=>{
 }
 
 const deleteCar = async (req,res)=>{
+  // #swagger.tags = ['Car']
+
   let {id} = req.params
 
   let car_id = await prisma.car.findUnique({

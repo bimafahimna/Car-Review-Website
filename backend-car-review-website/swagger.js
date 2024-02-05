@@ -7,11 +7,21 @@ const doc = {
     description: 'Car Review REST API Documentation',
     
   },
-  host: 'localhost:90',
+
+  host: process.env.HOST,
   basePath: "/",
-    schemes: ['http', 'https'],
-    consumes: ['application/json'],
-    produces: ['application/json'],
+  schemes: ['http', 'https'],
+  consumes: ['application/json'],
+  produces: ['application/json'],
+  components: {
+    securitySchemes:{
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer'
+        }
+    }
+  }
+  
 };
 
 const outputFile = './swagger-output.json';

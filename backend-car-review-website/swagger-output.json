@@ -5,15 +5,17 @@
     "title": "Car Review REST API",
     "description": "Car Review REST API Documentation"
   },
-  "servers": [
-    {
-      "url": "http://localhost:90/"
-    },
-    {
-      "url": "https://localhost:90/"
-    }
-  ],
   "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/register": {
       "post": {
         "tags": [
@@ -133,6 +135,9 @@
     },
     "/api/cars": {
       "get": {
+        "tags": [
+          "Car"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -147,6 +152,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Car"
+        ],
         "description": "",
         "parameters": [
           {
@@ -180,6 +188,11 @@
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -231,6 +244,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "Car"
+        ],
         "description": "",
         "parameters": [
           {
@@ -294,6 +310,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Car"
+        ],
         "description": "",
         "parameters": [
           {
@@ -515,6 +534,14 @@
             }
           }
         }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }
