@@ -23,7 +23,7 @@ app.use(express.json())
 app.use('/', mainRoutes)
 
 /* Middlewares */
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile,options))
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile,options))
 
 app.listen(port, () => {
   console.log(`REST API MongoDB Atlas App listening on port ${port}\nAPI documentation: http://localhost:90/`)
