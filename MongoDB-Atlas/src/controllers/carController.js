@@ -62,7 +62,8 @@ const updateCar = async (req,res)=>{
   let {id} = req.params
   let {manufacturer,model,release_year,image_link} = req.body
 
-  let unique_key = String(manufacturer)+" "+String(model)+" "+String(release_year)
+  let rel_year = String(release_year)
+  let unique_key = String(manufacturer)+" "+String(model)+" "+rel_year
 
   if (model !== undefined && image_link !== undefined && manufacturer !== undefined && release_year !== undefined){
     try{
@@ -71,26 +72,11 @@ const updateCar = async (req,res)=>{
           id: String(id)
         },
         data:{
+          manufacturer:manufacturer,
+          model:model,
+          release_year:rel_year,
           unique_key:unique_key,
-          image_link:image_link,
-          manufacturers:{
-            connectOrCreate:{
-              where:{manufacturer:manufacturer},
-              create:{manufacturer:manufacturer}
-            }
-          },
-          models:{
-            connectOrCreate:{
-              where:{model:model},
-              create:{model:model}
-            }
-          },
-          release_years:{
-            connectOrCreate:{
-              where:{release_year:String(release_year)},
-              create:{release_year:String(release_year)}
-            }
-          }
+          image_link:image_link
         }
       })
       
