@@ -26,7 +26,6 @@ router.get('/', (req,res)=>{
 // auth
 router.post('/api/register', register)
 router.post('/api/login', login)
-router.delete("/api/delete",authenticateJWT,deleteUser)
 
 // Cars
 router.get('/api/cars', getCars)
